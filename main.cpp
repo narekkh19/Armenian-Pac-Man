@@ -16,10 +16,12 @@ int main() {
     int ghost_frameIndex {};
     sf::Clock animationClock;
     float frameTime = 0.15f;
-
+    sf::Clock gameLoopClock; // For delta time
+    float deltaTime = 0.f;
 
     sf::Event::KeyEvent currKey {};
     while (window.isOpen()) {
+        deltaTime = gameLoopClock.restart().asSeconds();
         sf::Event event;
 
         while (window.pollEvent(event)) {
@@ -27,12 +29,12 @@ int main() {
             if (event.type == sf::Event::Closed) {
                 window.close();
             }
-
+            
             if (event.type == sf::Event::KeyPressed) {
                 currKey.code = event.key.code;
             }
         }
-        map.getPacman().PacmanMovement(currKey, map);    
+        map.getPacman().PacmanMovement(currKey, map, deltaTime);    
         for (auto& ghost : map.getGhost())  ghost.GhostMovement(map);
         
         if (animationClock.getElapsedTime().asSeconds() > frameTime) {
@@ -40,11 +42,11 @@ int main() {
             ghost_frameIndex = (ghost_frameIndex + 1) % map.getGhost()[0].getCurrDirection().size();
             animationClock.restart();
         }
-
-
-
+        
+        
+        
         window.clear(sf::Color::Black);
-
+        
         map.draw(window);
         map.getPacman().draw(window, pac_frameIndex);
         for (auto& ghost : map.getGhost())  ghost.draw(window, ghost_frameIndex);

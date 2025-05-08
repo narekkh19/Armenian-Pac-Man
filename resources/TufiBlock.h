@@ -18,7 +18,7 @@ class TufiBlock {
     }
 
     void drawTuF(sf::RenderWindow& window, int i, int j) {
-        tuf_spr.setPosition(j * min_x, i * min_y);
+        tuf_spr.setPosition(j * tile_x, i * tile_y);
         window.draw(tuf_spr);
     }
 

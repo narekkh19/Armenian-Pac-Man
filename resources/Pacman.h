@@ -14,9 +14,12 @@ class Pacman {
     std::vector<sf::Sprite> Lframes; 
     sf::Vector2f currPos;
     Directions currDir;
-    sf::Clock movementClock;
-    float moveInterval = 0.15f;
     static constexpr int Pacman_Directions = 12;
+    Directions requestedDir;
+    sf::Vector2f targetPos;      // the tile‐center we’re sliding toward
+    float   moveProgress = 1.f;  // 0→1 progress of slide (1 means “arrived”)
+    float   moveDuration = 0.2f; // seconds to slide one tile
+    sf::Keyboard::Key nextKey;
 
     public:
 
@@ -26,7 +29,7 @@ class Pacman {
         std::vector<sf::Sprite>& getCurrDirection();
         sf::Vector2f getCurrPosition();
         void setCurrPosition(int i, int j);
-        void PacmanMovement(sf::Event::KeyEvent currKey, Map& map);
+        void PacmanMovement(sf::Event::KeyEvent currKey, Map& map, float deltaTime);
         bool isValidPosition(const sf::Vector2f& nextPos, const Map& map) const;
         void eat(const sf::Vector2f& nextPos, Map& map);
         void draw(sf::RenderWindow& window,  int pac_frameindex);

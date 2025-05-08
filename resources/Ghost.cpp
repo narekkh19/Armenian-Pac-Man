@@ -21,7 +21,7 @@ Ghost::Ghost(const Ghosts& _type, int i, int j) : type{_type}, gen(std::random_d
             Upframes.push_back(Ghost_spr);
         }
     }
-    currPos = sf::Vector2f(j * min_x, i * min_y);
+    currPos = sf::Vector2f(j * tile_x, i * tile_y);
     currDir = Directions::Up;
     for (auto& currSprite : getCurrDirection()) currSprite.setPosition(currPos);
 }
@@ -37,8 +37,8 @@ std::vector<sf::Sprite>& Ghost::getCurrDirection() {
 }
 
 bool Ghost::isValidPosition(const sf::Vector2f& nextPos, const Map& map) const {
-    int ind_x = nextPos.x / min_x;
-    int ind_y = nextPos.y / min_y;
+    int ind_x = nextPos.x / tile_x;
+    int ind_y = nextPos.y / tile_y;
     if (ind_x >= 0 && ind_y >= 0 && ind_x < window_x && ind_y < window_y) {
         if (map.level[ind_y][ind_x] != static_cast<int>(MapDetails::Block)) {
             return true;
@@ -55,7 +55,7 @@ void Ghost::GhostMovement(Map& map) {
     int i = 0; // for Directions (Up, Right ...)
     for (auto [dx,dy] : dirs) {
         ++i;
-        sf::Vector2f test = currPos + sf::Vector2f(dx * min_x, dy * min_y);
+        sf::Vector2f test = currPos + sf::Vector2f(dx * tile_x, dy * tile_y);
         if (!isValidPosition(test, map)) continue;
         
         currPos = std::move(test);
@@ -69,7 +69,7 @@ void Ghost::GhostMovement(Map& map) {
 }
 
 void Ghost::setCurrPosition(int i, int j) {
-    currPos = sf::Vector2f(j * min_x, i * min_y);
+    currPos = sf::Vector2f(j * tile_x, i * tile_y);
 }
 
 

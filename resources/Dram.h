@@ -18,7 +18,13 @@ class Dram {
         }
 
         void drawDram(sf::RenderWindow& window, int i, int j) {
-            Dram_spr.setPosition(j * min_x, i * min_y);
+            sf::FloatRect spriteBounds = Dram_spr.getGlobalBounds();
+            float cellX = j * tile_x;
+            float cellY = i * tile_y;
+            float offsetX = (tile_x - spriteBounds.width) / 2.f;
+            float offsetY = (tile_y - spriteBounds.height) / 2.f;
+
+            Dram_spr.setPosition(cellX + offsetX, offsetY + cellY);
             window.draw(Dram_spr);
         }
 
