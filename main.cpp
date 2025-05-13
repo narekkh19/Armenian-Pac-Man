@@ -12,6 +12,9 @@ int main() {
     map.loadLevel();
 
     sf::RenderWindow window(sf::VideoMode({1360, 690}), "Pac-Man in Armenia");
+    window.setVerticalSyncEnabled(true);
+    window.setFramerateLimit(60);
+
     int pac_frameIndex {};
     int ghost_frameIndex {};
     sf::Clock animationClock;
@@ -32,14 +35,18 @@ int main() {
             
             if (event.type == sf::Event::KeyPressed) {
                 currKey.code = event.key.code;
+            
+                if (event.key.code == sf::Keyboard::W && event.key.control) {
+                    window.close();
+                }
             }
         }
         map.getPacman().PacmanMovement(currKey, map, deltaTime);    
-        for (auto& ghost : map.getGhost())  ghost.GhostMovement(map);
+        for (auto& ghost : map.getGhost()) ghost.move(map, deltaTime); 
         
         if (animationClock.getElapsedTime().asSeconds() > frameTime) {
             pac_frameIndex = (pac_frameIndex + 1) % map.getPacman().getCurrDirection().size();
-            ghost_frameIndex = (ghost_frameIndex + 1) % map.getGhost()[0].getCurrDirection().size();
+            ghost_frameIndex = (ghost_frameIndex + 1) % 2;
             animationClock.restart();
         }
         

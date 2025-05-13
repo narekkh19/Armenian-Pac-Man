@@ -1,0 +1,1 @@
+dont forget to declare virtual and non virtual destructors

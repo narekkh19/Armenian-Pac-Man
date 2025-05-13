@@ -111,6 +111,7 @@ int main() {
     sf::RenderWindow window(sf::VideoMode({1360, 690}), "Pac-Man");
 
     sf::Texture pacmanImage;
+    sf::Texture t = pacmanImage;
     pacmanImage.loadFromFile("./images/18.png");
 
     sf::Texture blockImage;

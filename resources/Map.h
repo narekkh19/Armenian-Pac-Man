@@ -13,18 +13,17 @@ class Map {
     std::vector<std::vector<int>> level;
     Pacman pac;
     TufiBlock tuf;
-    std::vector<Ghost> hresh;
+    std::vector<Ghost*> hresh;
     Dram hazarnoc;
     friend Pacman;
     friend Ghost;
 public:
-        Map() : pac(), tuf(), hresh{Ghost(Ghosts::Red, 11, 19), Ghost(Ghosts::Orange, 11, 20), Ghost(Ghosts::Green, 11, 21)}, hazarnoc() {}       
-
+        Map();
         void loadLevel();
         Pacman& getPacman();
         TufiBlock& getTufiBlock();
         Dram& getDram();
-        std::vector<Ghost>& getGhost();
+        std::vector<Ghost*>& getGhost();
         void draw(sf::RenderWindow& window);
 };      
 

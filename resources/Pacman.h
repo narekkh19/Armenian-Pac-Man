@@ -28,6 +28,7 @@ class Pacman {
         Pacman& operator= (const Pacman& other);
         std::vector<sf::Sprite>& getCurrDirection();
         sf::Vector2f getCurrPosition();
+        Directions getcurrDir();
         void setCurrPosition(int i, int j);
         void PacmanMovement(sf::Event::KeyEvent currKey, Map& map, float deltaTime);
         bool isValidPosition(const sf::Vector2f& nextPos, const Map& map) const;

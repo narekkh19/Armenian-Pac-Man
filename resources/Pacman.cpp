@@ -79,6 +79,8 @@ std::vector<sf::Sprite>& Pacman::getCurrDirection() {
         
         case Directions::Up:
             return Upframes;
+        case Directions::None:
+            break;
     }
     return Rframes;
 }
@@ -93,6 +95,10 @@ bool Pacman::isValidPosition(const sf::Vector2f& nextPos, const Map& map) const 
         }
     }
     return false;
+}
+
+Directions Pacman::getcurrDir() {
+    return currDir;
 }
 
 void Pacman::eat(const sf::Vector2f& nextPos, Map& map) {
@@ -142,7 +148,7 @@ void Pacman::PacmanMovement(sf::Event::KeyEvent currKey, Map& map, float deltaTi
             case Directions::Right: offset = {tile_x, 0};  break;
             case Directions::Down:  offset = {0, tile_y};  break;
             case Directions::Left:  offset = {-tile_x, 0}; break;
-            case Directions::None break;
+            case Directions::None: break;
         }
 
         sf::Vector2f nextPos = currPos + offset;
