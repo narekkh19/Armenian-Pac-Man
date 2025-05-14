@@ -1,8 +1,8 @@
 #ifndef MAP_H
 #define MAP_H
 
-#include "Ghost.h"
-#include "TufiBlock.h"
+#include "Ghost/Ghost.h"
+#include "Block.h"
 #include "Dram.h"
 #include "Pacman.h"
 #include <vector>
@@ -12,7 +12,7 @@
 class Map {
     std::vector<std::vector<int>> level;
     Pacman pac;
-    TufiBlock tuf;
+    Block block;
     std::vector<Ghost*> hresh;
     Dram hazarnoc;
     friend Pacman;
@@ -21,9 +21,11 @@ public:
         Map();
         void loadLevel();
         Pacman& getPacman();
-        TufiBlock& getTufiBlock();
+        Block& getBlock();
         Dram& getDram();
+        bool isBlock(const int i) const;
         std::vector<Ghost*>& getGhost();
+        void checkGameResult(sf::RenderWindow& window);
         void draw(sf::RenderWindow& window);
 };      
 

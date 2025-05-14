@@ -1,7 +1,7 @@
 CXX = g++
 CXXFLAGS = -std=c++20 -Wall
 LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -Wsign-compare
-SOURCES = main.cpp resources/Map.cpp resources/Pacman.cpp resources/Ghost.cpp resources/Blinky.cpp resources/Pinky.cpp resources/Inky.cpp resources/Clyde.cpp
+SOURCES = main.cpp resources/Map.cpp resources/Pacman.cpp resources/Ghost/Ghost.cpp resources/Ghost/Blinky.cpp resources/Ghost/Pinky.cpp resources/Ghost/Inky.cpp resources/Ghost/Clyde.cpp resources/Block.cpp
 OBJECTS = $(SOURCES:.cpp=.o)
 TARGET = app
 

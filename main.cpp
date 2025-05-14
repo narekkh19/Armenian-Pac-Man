@@ -1,7 +1,7 @@
 #include <iostream>
 #include "./resources/Pacman.h"
-#include "./resources/TufiBlock.h"  
-#include "./resources/Ghost.h"
+#include "./resources/Block.h"  
+#include "./resources/Ghost/Ghost.h"
 #include "./resources/Dram.h"
 #include "./resources/Map.h"
 #include <thread>
@@ -38,13 +38,15 @@ int main() {
             
                 if (event.key.code == sf::Keyboard::W && event.key.control) {
                     window.close();
+                    std::exit(0);
                 }
             }
         }
         
         map.getPacman().PacmanMovement(currKey, map, deltaTime);    
         for (auto* ghost : map.getGhost()) ghost->move(map, map.getPacman(), deltaTime); 
-        
+        map.checkGameResult(window);
+
         if (animationClock.getElapsedTime().asSeconds() > frameTime) {
             pac_frameIndex = (pac_frameIndex + 1) % map.getPacman().getCurrDirection().size();
             ghost_frameIndex = (ghost_frameIndex + 1) % 2;

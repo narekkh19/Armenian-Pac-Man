@@ -2,11 +2,11 @@
 #define GHOST_H
 
 #include "SFML/Graphics.hpp"
-#include "Pacman.h"
+#include "../Pacman.h"
 #include <algorithm>
 #include <random>
 #include <vector>
-#include "GameElements.h"
+#include "../GameElements.h"
 
 class Map;
 class Blinky;
@@ -45,6 +45,7 @@ class Ghost {
             
         std::vector<sf::Sprite>& getCurrDirection();
         virtual void move (Map& map, Pacman& pac, float deltaTime) = 0;
+        Directions oppositeDir(Directions currDir) const;
         bool isValidPosition(int ind_x, int ind_y, const Map& map) const;
         void setCurrPosition(int i, int j);
         sf::Vector2f getCurrPosition();

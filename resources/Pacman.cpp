@@ -4,8 +4,9 @@
 
 Pacman::Pacman() :  currPos(tile_x * 1.0f, tile_y * 1.0f), // Start at top-left of tile (1,1)
                     currDir(Directions::Right),
-                    requestedDir(Directions::None),
+                    startPos(currPos),
                     targetPos(currPos),
+                    requestedDir(Directions::None),
                     nextKey(sf::Keyboard::Unknown)
 {
     pacmanImage.loadFromFile("images/whole.png");
@@ -38,22 +39,24 @@ Pacman::Pacman(const Pacman& other) :
     Lframes(other.Lframes),
     currPos(other.currPos),
     currDir(other.currDir),
-    requestedDir(other.requestedDir),
+    startPos(other.startPos),
     targetPos(other.targetPos),
+    requestedDir(other.requestedDir),
     nextKey(other.nextKey)
     {}
 
 Pacman& Pacman::operator= (const Pacman& other) {
-    pacmanImage = other.pacmanImage;
-    Upframes = other.Upframes;
-    Rframes = other.Rframes;
-    Dframes = other.Dframes;
-    Lframes =  other.Lframes;
-    currDir = other.currDir; 
-    currPos = other.currPos;
+    pacmanImage  = other.pacmanImage;
+    Upframes     = other.Upframes;
+    Rframes      = other.Rframes;
+    Dframes      = other.Dframes;
+    Lframes      =  other.Lframes;
+    currDir      = other.currDir; 
+    currPos      = other.currPos;
+    startPos     = other.startPos,
+    targetPos    = other.targetPos;
     requestedDir = other.requestedDir;
-    targetPos = other.targetPos;
-    nextKey = other.nextKey;
+    nextKey      = other.nextKey;
     return *this;
 }
 
@@ -90,7 +93,7 @@ bool Pacman::isValidPosition(const sf::Vector2f& nextPos, const Map& map) const 
     int ind_y = nextPos.y / tile_y;
 
     if (ind_x >= 0 && ind_y >= 0 && ind_x < window_x && ind_y < window_y) {
-        if (map.level[ind_y][ind_x] != static_cast<int>(MapDetails::Block)) {
+        if (!map.isBlock(map.level[ind_y][ind_x])) {
             return true;
         }
     }
@@ -125,7 +128,9 @@ void Pacman::PacmanMovement(sf::Event::KeyEvent currKey, Map& map, float deltaTi
 
     // Move animation if in progress
     if (moveProgress < 1.f) {
-        moveProgress += deltaTime / moveDuration;
+        float progressDelta = deltaTime / moveDuration;
+        moveProgress += progressDelta;
+        currPos = startPos + (targetPos - startPos) * moveProgress;
         if (moveProgress > 1.f) moveProgress = 1.f;
 
         currPos = currPos + (targetPos - currPos) * (deltaTime / moveDuration);
@@ -135,6 +140,7 @@ void Pacman::PacmanMovement(sf::Event::KeyEvent currKey, Map& map, float deltaTi
         if (moveProgress == 1.f) {
             eat(targetPos, map);
             currPos = targetPos;
+            startPos = currPos;
         }
 
         return;

@@ -1,5 +1,5 @@
 #include "Ghost.h"
-#include "Map.h"
+#include "../Map.h"
 #include <iostream>
 
 
@@ -93,10 +93,18 @@ std::vector<sf::Sprite>& Ghost::getCurrDirection() {
     return Upframes;  // never happens, just to silence warnings
 }
 
+Directions Ghost::oppositeDir(Directions currDir) const {
+    if (currDir == Directions::Left) return Directions::Right;
+    if (currDir == Directions::Right) return Directions::Left;
+    if (currDir == Directions::Up) return Directions::Down;
+    return Directions::Up;
+}
+
+
 
 bool Ghost::isValidPosition(int ind_x, int ind_y, const Map& map) const {
     if (ind_x >= 0 && ind_y >= 0 && ind_x < window_x && ind_y < window_y) {
-        if (map.level[ind_y][ind_x] != static_cast<int>(MapDetails::Block)) {
+        if (!map.isBlock(map.level[ind_y][ind_x])) {
             return true;
         }
     }

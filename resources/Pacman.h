@@ -14,9 +14,10 @@ class Pacman {
     std::vector<sf::Sprite> Lframes; 
     sf::Vector2f currPos;
     Directions currDir;
+    sf::Vector2f startPos;  // NEW: Needed for smooth linear movement
+    sf::Vector2f targetPos;      // the tile‐center we’re sliding toward
     static constexpr int Pacman_Directions = 12;
     Directions requestedDir;
-    sf::Vector2f targetPos;      // the tile‐center we’re sliding toward
     float   moveProgress = 1.f;  // 0→1 progress of slide (1 means “arrived”)
     float   moveDuration = 0.2f; // seconds to slide one tile
     sf::Keyboard::Key nextKey;
