@@ -1,4 +1,6 @@
 #include "Inky.h"
+#include <iostream>
+
 
 int Inky::manhattanDist(int x1, int y1, int x2, int y2) {
     return std::abs(x1 - x2) + std::abs(y1 - y2);
@@ -20,7 +22,7 @@ std::pair<Directions, sf::Vector2f> Inky::InkysUnpredictableLogic(Map& map, Pacm
 
     auto desired = manhattanDistCoord(ind_x, ind_y, pac_x, pac_y);
 
-    sf::Vector2f finalDesired = {2 * desired.first * tile_x, 2 * desired.second* tile_y};
+    sf::Vector2f finalDesired = sf::Vector2f(2 * desired.first * tile_x, 2 * desired.second* tile_y);
 
     int fdes_x = finalDesired.x / tile_x;
     int fdes_y = finalDesired.y / tile_y;
@@ -37,7 +39,7 @@ std::pair<Directions, sf::Vector2f> Inky::InkysUnpredictableLogic(Map& map, Pacm
         ++i;
         int curr_dist = manhattanDist(dx + ind_x, dy + ind_y, fdes_x, fdes_y);
 
-        if (isValidPosition({dx + ind_x, dy + ind_y}, map)) {
+        if (isValidPosition(dx + ind_x, dy + ind_y, map)) {
             if (curr_dist < minDist) {
                 minDist = curr_dist;
                 targetPos = currPos + sf::Vector2f(dx * tile_x, dy * tile_y);
@@ -52,20 +54,23 @@ std::pair<Directions, sf::Vector2f> Inky::InkysUnpredictableLogic(Map& map, Pacm
 
 
 void Inky::move(Map& map, Pacman& pac, float deltaTime) {
+
      if (moveProgress >= 1.f) {
         auto targetInfo = InkysUnpredictableLogic(map, pac);
         currDir = targetInfo.first;
+        startPos = currPos;
         targetPos = targetInfo.second;
 
         moveProgress = 0.f;
+        
     } 
     if (moveProgress < 1.f) {
-
-        moveProgress += deltaTime / moveDuration;
+        float progressDelta = deltaTime / moveDuration;
+        moveProgress += progressDelta;
+        currPos = startPos + (targetPos - startPos) *  moveProgress;
         if (moveProgress > 1.f) moveProgress = 1.f;
-        currPos = currPos + (targetPos - currPos) * (deltaTime / moveDuration);
+        
         for (auto& spr : getCurrDirection()) spr.setPosition(currPos);
-
         
         if (moveProgress == 1.f) {
             currPos = targetPos;

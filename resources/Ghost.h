@@ -7,7 +7,6 @@
 #include <random>
 #include <vector>
 #include "GameElements.h"
-#include "Blinky.h"
 
 class Map;
 class Blinky;
@@ -17,15 +16,14 @@ class Clyde;
 
 class Ghost {
     Ghosts type;
-    static sf::Texture GhostImage;
+    sf::Texture GhostImage;
+    std::vector<sf::Sprite> Upframes;
     std::vector<sf::Sprite> Rframes;
     std::vector<sf::Sprite> Dframes; 
     std::vector<sf::Sprite> Lframes; 
-    std::vector<sf::Sprite> Upframes;
     sf::Vector2f currPos;
     Directions currDir;
-    std::mt19937 gen;                    
-    std::vector<std::pair<int,int>> dirs;
+    sf::Vector2f startPos;  // NEW: Needed for smooth linear movement
     sf::Vector2f targetPos;      // the tile‐center we’re sliding toward
     float   moveProgress = 1.f;  // 0→1 progress of slide (1 means “arrived”)
     float   moveDuration = 0.2f; 
@@ -38,7 +36,7 @@ class Ghost {
 
     
     public:
-        Ghost(int i, int j);
+        Ghost(int i, int j, Ghosts type);
         Ghost() = delete;
         Ghost(const Ghost& other);
         Ghost(Ghost&& other);
@@ -47,7 +45,7 @@ class Ghost {
             
         std::vector<sf::Sprite>& getCurrDirection();
         virtual void move (Map& map, Pacman& pac, float deltaTime) = 0;
-        bool isValidPosition(const sf::Vector2f& nextPos, const Map& map) const;
+        bool isValidPosition(int ind_x, int ind_y, const Map& map) const;
         void setCurrPosition(int i, int j);
         sf::Vector2f getCurrPosition();
         void draw(sf::RenderWindow& window, int ghost_frameindex);

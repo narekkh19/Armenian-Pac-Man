@@ -2,25 +2,17 @@
 #include "Map.h"
 #include <iostream>
 
-sf::Texture Ghost::GhostImage;
 
-Ghost::Ghost(int i, int j)  :                       currPos(j * tile_x, i * tile_y),
-                                                    currDir(Directions::Up),
-                                                    gen(std::random_device{}()),
-                                                    dirs{{0,-1}, {1,0}, {0,1}, {-1,0}},
-                                                    targetPos()
-{
-    static bool loaded = [] {
-        if (!GhostImage.loadFromFile("images/whole.png")) {
-            throw std::runtime_error("Failed to load ghost texture");
-        }
-        return true;
-    }();
-    sf::Sprite Ghost_spr(GhostImage);
+Ghost::Ghost(int i, int j, Ghosts type)  :   currPos(j * tile_x, i * tile_y), currDir(Directions::Up), startPos(currPos), targetPos() {
+   
+    if (!GhostImage.loadFromFile("images/whole.png")) {
+        throw std::runtime_error("Failed to load ghost texture");
+    }
+
     int col = static_cast<int>(type); // every color is in the particular columns 
-    sf::Sprite test;
+    sf::Sprite Ghost_spr(GhostImage);
     
-
+    
     for (int row = 0; row < Ghost_image_Directions; ++row) {
         Ghost_spr.setTextureRect(sf::IntRect(col * 50, row * 50, 50, 50));
 
@@ -42,14 +34,13 @@ Ghost::Ghost(int i, int j)  :                       currPos(j * tile_x, i * tile
 
 Ghost::Ghost(const Ghost& other) 
     :   type(other.type),
+        Upframes(other.Upframes),
         Rframes(other.Rframes),
         Dframes(other.Dframes),
         Lframes(other.Lframes),
-        Upframes(other.Upframes),
         currPos(other.currPos),
         currDir(other.currDir),
-        gen(other.gen),
-        dirs(other.dirs),
+        startPos(other.startPos),
         targetPos(other.targetPos) {}
 
 Ghost::Ghost(Ghost&& other) 
@@ -60,21 +51,19 @@ Ghost::Ghost(Ghost&& other)
         Lframes{std::move(other.Lframes)},
         currPos{std::move(other.currPos)},
         currDir{std::move(other.currDir)},                            
-        gen{std::move(other.gen)},
-        dirs{std::move(other.dirs)},
+        startPos{std::move(other.startPos)},
         targetPos{std::move(other.targetPos)} {}
 
 Ghost& Ghost::operator=(const Ghost& other) {
     if (&other == this) return *this;
     type         = other.type;
+    Upframes     = other.Upframes;
     Rframes      = other.Rframes;
     Dframes      = other.Dframes;
     Lframes      = other.Lframes;
-    Upframes     = other.Upframes;
     currPos      = other.currPos;
     currDir      = other.currDir;
-    gen          = other.gen;
-    dirs         = other.dirs;
+    startPos     = other.startPos;
     targetPos    = other.targetPos;
     return *this;
 }
@@ -82,14 +71,13 @@ Ghost& Ghost::operator=(const Ghost& other) {
 Ghost& Ghost::operator=(Ghost&& other) {
     if (&other == this) return *this;
     type         = std::move(other.type);
+    Upframes     = std::move(other.Upframes);
     Rframes      = std::move(other.Rframes);
     Dframes      = std::move(other.Dframes);
     Lframes      = std::move(other.Lframes);
-    Upframes     = std::move(other.Upframes);
     currPos      = std::move(other.currPos);
     currDir      = std::move(other.currDir);
-    gen          = std::move(other.gen);
-    dirs         = std::move(other.dirs);
+    startPos     = std::move(other.startPos);
     targetPos    = std::move(other.targetPos);
     return *this;
 }
@@ -106,9 +94,7 @@ std::vector<sf::Sprite>& Ghost::getCurrDirection() {
 }
 
 
-bool Ghost::isValidPosition(const sf::Vector2f& nextPos, const Map& map) const {
-    int ind_x = nextPos.x / tile_x;
-    int ind_y = nextPos.y / tile_y;
+bool Ghost::isValidPosition(int ind_x, int ind_y, const Map& map) const {
     if (ind_x >= 0 && ind_y >= 0 && ind_x < window_x && ind_y < window_y) {
         if (map.level[ind_y][ind_x] != static_cast<int>(MapDetails::Block)) {
             return true;

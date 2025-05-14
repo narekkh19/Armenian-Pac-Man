@@ -41,8 +41,9 @@ int main() {
                 }
             }
         }
+        
         map.getPacman().PacmanMovement(currKey, map, deltaTime);    
-        for (auto& ghost : map.getGhost()) ghost.move(map, deltaTime); 
+        for (auto* ghost : map.getGhost()) ghost->move(map, map.getPacman(), deltaTime); 
         
         if (animationClock.getElapsedTime().asSeconds() > frameTime) {
             pac_frameIndex = (pac_frameIndex + 1) % map.getPacman().getCurrDirection().size();
@@ -56,7 +57,7 @@ int main() {
         
         map.draw(window);
         map.getPacman().draw(window, pac_frameIndex);
-        for (auto& ghost : map.getGhost())  ghost.draw(window, ghost_frameIndex);
+        for (auto* ghost : map.getGhost())  ghost->draw(window, ghost_frameIndex);
         
         window.display();
 

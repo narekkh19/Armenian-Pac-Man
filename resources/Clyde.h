@@ -2,7 +2,7 @@
 
 class Clyde : public Ghost {
     public:
-        Clyde(int i, int j) : Ghost(i, j) {};
+        Clyde(int i, int j) : Ghost(i, j, Ghosts::Orange) {};
         Clyde() = delete;
         Clyde(const Clyde& other) : Ghost(other) {};
         Clyde(Clyde&& other) : Ghost(std::move(other)) {};

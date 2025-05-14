@@ -5,7 +5,6 @@
 #include "Clyde.h"
 
 Map::Map() : pac(), tuf(), hresh{}, hazarnoc() {
-    
     hresh.push_back(new Blinky(11, 19));
     hresh.push_back(new Pinky(11, 20));
     hresh.push_back(new Inky(11, 21));
