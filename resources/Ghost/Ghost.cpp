@@ -115,6 +115,9 @@ void Ghost::setCurrPosition(int i, int j) {
     currPos = sf::Vector2f(j * tile_x, i * tile_y);
 }
 
+void Ghost::setDontMove(bool b) {
+    dontMove = true;
+}
 
 sf::Vector2f Ghost::getCurrPosition() {
     return currPos;

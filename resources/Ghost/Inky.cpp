@@ -53,6 +53,7 @@ std::pair<Directions, sf::Vector2f> Inky::InkysUnpredictableLogic(Map& map, Pacm
 
 
 void Inky::move(Map& map, Pacman& pac, float deltaTime) {
+    if (dontMove) return;
 
      if (moveProgress >= 1.f) {
         auto targetInfo = InkysUnpredictableLogic(map, pac);

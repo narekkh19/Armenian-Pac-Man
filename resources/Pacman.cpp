@@ -1,6 +1,8 @@
 #include "Pacman.h"
 #include "Map.h"
 #include <iostream>
+#include <thread>
+#include <chrono>
 
 Pacman::Pacman() :  currPos(tile_x * 1.0f, tile_y * 1.0f), // Start at top-left of tile (1,1)
                     currDir(Directions::Right),
@@ -107,10 +109,51 @@ Directions Pacman::getcurrDir() {
 void Pacman::eat(const sf::Vector2f& nextPos, Map& map) {
     int ind_x = nextPos.x / tile_x;
     int ind_y = nextPos.y / tile_y;
+    if (map.level[ind_y][ind_x] == 0) return;
     map.level[ind_y][ind_x] = 0;
+    score += 1000;
+
 } 
 
+
+bool Pacman::lastWord(sf::RenderWindow& window) {
+    static sf::Sprite curr_spr(pacmanImage);
+    static std::vector<sf::Sprite> death_spr;
+    [[maybe_unused]] static bool _ =  [this]() {
+        for (int i = 0; i < 11; ++i) {
+            curr_spr.setTextureRect(sf::IntRect(7 * 50, i * 50, 50, 50));
+            curr_spr.setScale(34.f / 50.f, 30.f / 50.f);
+            curr_spr.setPosition(currPos);            
+            death_spr.push_back(curr_spr);
+        }
+        return true;
+    }();
+
+    float frameTime = 0.10f;
+    static sf::Clock clock;
+    static sf::Time overalTime;
+    static size_t currSpriteIndex = 0;    
+
+    window.draw(death_spr[currSpriteIndex]);
+
+
+    overalTime += clock.restart();
+    
+    
+    if (overalTime.asSeconds() > frameTime) {
+        ++currSpriteIndex;
+        if (currSpriteIndex == death_spr.size()) return false;
+        overalTime = sf::Time::Zero;
+    }
+    return true;
+}
+
+void Pacman::setDead(bool flag) {
+    isDead = true;
+}
+
 void Pacman::PacmanMovement(sf::Event::KeyEvent currKey, Map& map, float deltaTime) {
+    if (isDead) return;
     // Buffer the key until we can act on it
     if (currKey.code != sf::Keyboard::Unknown)
         nextKey = currKey.code;
@@ -179,5 +222,17 @@ void Pacman::PacmanMovement(sf::Event::KeyEvent currKey, Map& map, float deltaTi
 }
 
 void Pacman::draw(sf::RenderWindow& window,  int pac_frameindex) {
+    if (isDead) {
+        [[maybe_unused]] bool ret = lastWord(window);
+        if (!ret) {
+            window.close();
+        } 
+            return;
+    } 
     window.draw(getCurrDirection()[pac_frameindex]);
+    
+}
+
+int Pacman::getScore() {
+    return score;
 }

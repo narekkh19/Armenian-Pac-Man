@@ -1,7 +1,7 @@
 #ifndef GAME_ELEMENTS
 #define GAME_ELEMENTS
 
-enum class GameIntities {None, Pacman, Tuf, Food, KesTuf, RedRoof, Ghosts, MegaFood};
+enum class GameIntities {None, Pacman, Tuf, Food, Avenue, Ghosts, MegaFood, NonVisibleBlock};
 
 enum class Ghosts {Red, Pink, Blue, Orange}; 
 

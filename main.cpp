@@ -58,10 +58,9 @@ int main() {
         window.clear(sf::Color::Black);
         
         map.draw(window);
-        map.getPacman().draw(window, pac_frameIndex);
         for (auto* ghost : map.getGhost())  ghost->draw(window, ghost_frameIndex);
+        map.getPacman().draw(window, pac_frameIndex);
         
         window.display();
-
     }
 }

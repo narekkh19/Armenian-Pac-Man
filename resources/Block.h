@@ -7,15 +7,15 @@
 class Block {
     sf::Texture TufiBlockImage;
     sf::Sprite tuf_spr;
-    sf::Texture KesTufiBlockImage;
-    sf::Sprite kestuf_spr;
-    sf::Texture RedRoofImage;
-    sf::Sprite roof_spr;
+    
+    sf::Texture HraparakImage;
+    sf::Sprite hr_spr;
+
 public:
 
     Block();
     void draw(sf::RenderWindow& window, GameIntities which, int i, int j);
-    sf::Sprite& getBlock(GameIntities which);
+    // sf::Sprite& getBlock(GameIntities which);
 
 };
 

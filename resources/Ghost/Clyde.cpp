@@ -52,6 +52,7 @@ std::pair<Directions, sf::Vector2f> Clyde::ClydeHesitating(Map& map, Pacman& pac
 
 
 void Clyde::move(Map& map, Pacman& pac, float deltaTime) {
+    if (dontMove) return;
     
     if (moveProgress >= 1.f) {
         auto targetInfo = ClydeHesitating(map, pac);

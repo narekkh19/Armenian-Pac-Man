@@ -48,6 +48,7 @@ std::pair<int, int> Pinky::DirectionToCoord(Directions dir) {
 }
 
 void Pinky::move(Map& map, Pacman& pac, float deltaTime) {
+    if (dontMove) return; 
 
      if (moveProgress >= 1.f) {
         auto targetInfo = DirectionAheadPacman(map, pac);

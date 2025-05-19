@@ -64,6 +64,7 @@ int Blinky::manhattanDist(int x1, int y1, int x2, int y2) {
 
 
 void Blinky::move(Map& map, Pacman& pac, float deltaTime) {
+    if (dontMove) return;
      if (moveProgress >= 1.f) {
         auto pacmanPos = pac.getCurrPosition();
         auto targetInfo = shortestDirectiontoPacman(map, pacmanPos);

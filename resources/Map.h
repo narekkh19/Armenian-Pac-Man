@@ -5,6 +5,7 @@
 #include "Block.h"
 #include "Dram.h"
 #include "Pacman.h"
+#include "Font.h"
 #include <vector>
 #include "SFML/Graphics.hpp"
 #include "GameElements.h"
@@ -15,9 +16,10 @@ class Map {
     Block block;
     std::vector<Ghost*> hresh;
     Dram hazarnoc;
+    Font pacmanScore;
     friend Pacman;
     friend Ghost;
-public:
+    public:
         Map();
         void loadLevel();
         Pacman& getPacman();
