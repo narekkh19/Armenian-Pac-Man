@@ -15,8 +15,6 @@ public:
 
     Block();
     void draw(sf::RenderWindow& window, GameIntities which, int i, int j);
-    // sf::Sprite& getBlock(GameIntities which);
-
 };
 
 

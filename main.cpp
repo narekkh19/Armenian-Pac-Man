@@ -2,7 +2,7 @@
 #include "./resources/Pacman.h"
 #include "./resources/Block.h"  
 #include "./resources/Ghost/Ghost.h"
-#include "./resources/Dram.h"
+#include "./resources/Food.h"
 #include "./resources/Map.h"
 #include <thread>
 #include <chrono>
@@ -52,7 +52,6 @@ int main() {
             ghost_frameIndex = (ghost_frameIndex + 1) % 2;
             animationClock.restart();
         }
-        
         
         
         window.clear(sf::Color::Black);

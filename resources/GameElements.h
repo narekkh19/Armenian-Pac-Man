@@ -7,6 +7,7 @@ enum class Ghosts {Red, Pink, Blue, Orange};
 
 enum class Directions { Up, Right, Down, Left, None};
 
+static constexpr int winningScore = 216;
 static constexpr int window_x = 40;
 static constexpr int window_y = 23;
 static constexpr int tile_x = 34;

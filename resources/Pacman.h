@@ -21,7 +21,8 @@ class Pacman {
     float   moveProgress = 1.f;  // 0→1 progress of slide (1 means “arrived”)
     float   moveDuration = 0.2f; // seconds to slide one tile
     sf::Keyboard::Key nextKey;
-    bool isDead = false;
+    bool PacmanWin = false;
+    bool PacmanDied = false;
     int score = 0;
 
     public:
@@ -36,7 +37,9 @@ class Pacman {
         void PacmanMovement(sf::Event::KeyEvent currKey, Map& map, float deltaTime);
         bool isValidPosition(const sf::Vector2f& nextPos, const Map& map) const;
         void eat(const sf::Vector2f& nextPos, Map& map);
-        void setDead(bool flag);
+        void setWin(bool flag);
+        void setDied(bool flag);
+        bool winAnimation(sf::RenderWindow& window);
         bool lastWord(sf::RenderWindow& window);
         void draw(sf::RenderWindow& window,  int pac_frameindex);
         int getScore();

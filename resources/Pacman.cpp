@@ -111,8 +111,8 @@ void Pacman::eat(const sf::Vector2f& nextPos, Map& map) {
     int ind_y = nextPos.y / tile_y;
     if (map.level[ind_y][ind_x] == 0) return;
     map.level[ind_y][ind_x] = 0;
+    if (map.level[ind_y][ind_x] == static_cast<int>(GameIntities::MegaFood)) return;
     score += 1000;
-
 } 
 
 
@@ -124,7 +124,7 @@ bool Pacman::lastWord(sf::RenderWindow& window) {
             curr_spr.setTextureRect(sf::IntRect(7 * 50, i * 50, 50, 50));
             curr_spr.setScale(34.f / 50.f, 30.f / 50.f);
             curr_spr.setPosition(currPos);            
-            death_spr.push_back(curr_spr);
+            death_spr.push_back(curr_spr);        
         }
         return true;
     }();
@@ -148,12 +148,47 @@ bool Pacman::lastWord(sf::RenderWindow& window) {
     return true;
 }
 
-void Pacman::setDead(bool flag) {
-    isDead = true;
+bool Pacman::winAnimation(sf::RenderWindow& window) {
+    static std::vector<std::vector<sf::Sprite>*> AllSprites;
+
+    [[maybe_unused]] static bool _ =  [this]() {
+        AllSprites.push_back(&Rframes);
+        AllSprites.push_back(&Dframes);
+        AllSprites.push_back(&Lframes);
+        AllSprites.push_back(&Upframes);
+        for (std::vector<sf::Sprite>* currDirection : AllSprites) {
+            for (sf::Sprite& currSprite : *currDirection) {
+                currSprite.setPosition(currPos);
+            }
+        }
+        return true;
+    }();
+    
+    float frameTime = 0.15f;
+    static sf::Clock clock;
+    static sf::Time overalTime;
+    static size_t currDirectionindex = 0;
+    static size_t currSpriteIndex = 0;    
+
+
+    window.draw((*(AllSprites[currDirectionindex]))[currSpriteIndex]);
+
+    overalTime += clock.restart();
+    
+    
+    if (overalTime.asSeconds() > frameTime) {
+        ++currSpriteIndex;
+        if (currSpriteIndex == (*(AllSprites[currDirectionindex])).size()) {
+            ++currDirectionindex;
+            if (currDirectionindex == AllSprites.size()) return false;
+        } 
+        overalTime = sf::Time::Zero;
+    }
+    return true;
 }
 
 void Pacman::PacmanMovement(sf::Event::KeyEvent currKey, Map& map, float deltaTime) {
-    if (isDead) return;
+    if (PacmanWin || PacmanDied) return;
     // Buffer the key until we can act on it
     if (currKey.code != sf::Keyboard::Unknown)
         nextKey = currKey.code;
@@ -221,14 +256,27 @@ void Pacman::PacmanMovement(sf::Event::KeyEvent currKey, Map& map, float deltaTi
     for (auto& spr : getCurrDirection()) spr.setPosition(currPos);
 }
 
+void Pacman::setWin(bool flag) {
+    PacmanWin = true;
+}
+
+void Pacman::setDied(bool flag) {
+    PacmanDied = true;
+}
+
 void Pacman::draw(sf::RenderWindow& window,  int pac_frameindex) {
-    if (isDead) {
+    if (PacmanDied) {
         [[maybe_unused]] bool ret = lastWord(window);
-        if (!ret) {
-            window.close();
-        } 
-            return;
-    } 
+        if (!ret) window.close();
+
+        return;
+    } else if (PacmanWin) {
+        [[maybe_unused]] bool ret = winAnimation(window);
+        if (!ret) window.close();
+
+        return;
+    }
+
     window.draw(getCurrDirection()[pac_frameindex]);
     
 }

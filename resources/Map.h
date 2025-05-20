@@ -3,7 +3,7 @@
 
 #include "Ghost/Ghost.h"
 #include "Block.h"
-#include "Dram.h"
+#include "Food.h"
 #include "Pacman.h"
 #include "Font.h"
 #include <vector>
@@ -14,8 +14,8 @@ class Map {
     std::vector<std::vector<int>> level;
     Pacman pac;
     Block block;
+    Food meal;
     std::vector<Ghost*> hresh;
-    Dram hazarnoc;
     Font pacmanScore;
     friend Pacman;
     friend Ghost;
@@ -24,7 +24,7 @@ class Map {
         void loadLevel();
         Pacman& getPacman();
         Block& getBlock();
-        Dram& getDram();
+        Food& getDram();
         bool isBlock(const int i) const;
         std::vector<Ghost*>& getGhost();
         void checkGameResult(sf::RenderWindow& window);

@@ -27,9 +27,3 @@
         curr->setPosition(j * tile_x, i * tile_y);
         window.draw(*curr);
     }
-
-    // sf::Sprite& Block::getBlock(GameIntities which) {
-    //     if (which == GameIntities::Tuf) return tuf_spr;
-    //     if (which == GameIntities::KesTuf) return kestuf_spr;
-    //     return roof_spr;
-    // }
