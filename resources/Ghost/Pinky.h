@@ -2,7 +2,7 @@
 
 class Pinky : public Ghost {
     public:
-        Pinky(int i, int j) : Ghost(i, j, Ghosts::Pink) {};
+        Pinky(int i, int j) : Ghost(i, j, GhostType::Pink) {};
         Pinky() = delete;
         Pinky(const Pinky& other) : Ghost(other) {};
         Pinky(Pinky&& other) : Ghost(std::move(other)) {};

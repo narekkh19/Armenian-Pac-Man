@@ -2,7 +2,7 @@
 
 class Blinky : public Ghost {
     public:
-        Blinky(int i, int j) : Ghost(i, j, Ghosts::Red) {};
+        Blinky(int i, int j) : Ghost(i, j, GhostType::Red) {};
         Blinky() = delete;
         Blinky(const Blinky& other) : Ghost(other) {};
         Blinky(Blinky&& other) : Ghost(std::move(other)) {};

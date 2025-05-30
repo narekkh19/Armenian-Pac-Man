@@ -3,7 +3,7 @@
 
 enum class GameIntities {None, Pacman, Tuf, Food, Avenue, Ghosts, MegaFood, NonVisibleBlock};
 
-enum class Ghosts {Red, Pink, Blue, Orange}; 
+enum class GhostType {Red, Pink, Blue, Orange}; 
 
 enum class Directions { Up, Right, Down, Left, None};
 

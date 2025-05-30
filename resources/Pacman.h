@@ -38,10 +38,14 @@ class Pacman {
         bool isValidPosition(const sf::Vector2f& nextPos, const Map& map) const;
         void eat(const sf::Vector2f& nextPos, Map& map);
         void setWin(bool flag);
+        bool isDead();
+        bool hasWon();
+        bool animationEnded = false;
         void setDied(bool flag);
+        bool getDiedStatus();
         bool winAnimation(sf::RenderWindow& window);
         bool lastWord(sf::RenderWindow& window);
-        void draw(sf::RenderWindow& window,  int pac_frameindex);
+        bool draw(sf::RenderWindow& window,  int pac_frameindex);
         int getScore();
 };
 

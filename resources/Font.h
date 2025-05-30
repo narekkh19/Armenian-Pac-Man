@@ -10,7 +10,7 @@ class Font {
 
     public: 
         Font() {
-            font.loadFromFile("/home/narek/Downloads/Noto_Sans_Armenian,Ubuntu/Noto_Sans_Armenian/NotoSansArmenian-VariableFont_wdth,wght.ttf");
+            font.loadFromFile("./fonts/NotoSansArmenian-VariableFont_wdth,wght.ttf");
             text.setFont(font);
             text.setCharacterSize(24);
             text.setFillColor(sf::Color::Black);

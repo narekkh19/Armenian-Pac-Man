@@ -12,6 +12,10 @@ Map::Map() : pac(), block(), meal(), hresh{}, pacmanScore() {
     hresh.push_back(new Clyde(11, 33));
 }
 
+Map::~Map() {
+    for (auto* ghost : hresh) delete ghost;
+}
+
 
 void Map::loadLevel() {
  level = {
@@ -113,20 +117,25 @@ void Map::draw(sf::RenderWindow& window) {
     pacmanScore.draw(window, getPacman().getScore());
 }
 
-void Map::checkGameResult(sf::RenderWindow& window) {
+void Map::checkGameResult(sf::RenderWindow& window) { 
+    if (getPacman().isDead() || getPacman().hasWon()) return; 
+
+    const float collision_tile_x = 30.0f; 
+    const float collision_tile_y = 30.0f; 
+
     sf::Vector2f pacmanPos = getPacman().getCurrPosition();
-    for (auto* ghost : getGhost()) {
-        sf::Vector2f ghostPos = ghost->getCurrPosition();
-        sf::Vector2f result = pacmanPos - ghostPos;
-        if (std::fabs(result.x) < tile_x / 3 && std::fabs(result.y) < tile_y / 3) {
-            for (auto* ghost : getGhost()) ghost->setDontMove(true);
-            getPacman().setDied(true);
-            return;
-        }
+    for (auto* ghost_ptr : getGhost()) {
+            sf::Vector2f ghostPos = ghost_ptr->getCurrPosition();
+            sf::Vector2f distanceVec = pacmanPos - ghostPos;
+            if (std::fabs(distanceVec.x) < collision_tile_x / 2.0f && std::fabs(distanceVec.y) < collision_tile_y / 2.0f) {
+                for (auto* g : getGhost()) g->setDontMove(true);
+                getPacman().setDied(true); // Pac-Man starts its death animation
+                return; 
+            }
     }
-    
-    if (getPacman().getScore() / 1000 == winningScore) {
-        for (auto* ghost : getGhost()) ghost->setDontMove(true);
-        getPacman().setWin(true);
+
+    if (getPacman().getScore() / 1000 >= winningScore) { 
+        for (auto* g : getGhost()) g->setDontMove(true);
+        getPacman().setWin(true); // Pac-Man starts its win animation
     }
 }

@@ -84,6 +84,7 @@ std::vector<sf::Sprite>& Pacman::getCurrDirection() {
         
         case Directions::Up:
             return Upframes;
+            
         case Directions::None:
             break;
     }
@@ -142,7 +143,10 @@ bool Pacman::lastWord(sf::RenderWindow& window) {
     
     if (overalTime.asSeconds() > frameTime) {
         ++currSpriteIndex;
-        if (currSpriteIndex == death_spr.size()) return false;
+        if (currSpriteIndex == death_spr.size()) {
+            animationEnded = true;
+            return false;
+        }
         overalTime = sf::Time::Zero;
     }
     return true;
@@ -180,7 +184,11 @@ bool Pacman::winAnimation(sf::RenderWindow& window) {
         ++currSpriteIndex;
         if (currSpriteIndex == (*(AllSprites[currDirectionindex])).size()) {
             ++currDirectionindex;
-            if (currDirectionindex == AllSprites.size()) return false;
+            currSpriteIndex = 0;
+            if (currDirectionindex == AllSprites.size()) {
+                animationEnded = true;
+                return false;
+            }
         } 
         overalTime = sf::Time::Zero;
     }
@@ -264,23 +272,30 @@ void Pacman::setDied(bool flag) {
     PacmanDied = true;
 }
 
-void Pacman::draw(sf::RenderWindow& window,  int pac_frameindex) {
+bool Pacman::draw(sf::RenderWindow& window,  int pac_frameindex) {
+    if ((PacmanDied || PacmanWin) && animationEnded) return true;
     if (PacmanDied) {
         [[maybe_unused]] bool ret = lastWord(window);
-        if (!ret) window.close();
-
-        return;
+        if (!ret) return true;
+        return false;
     } else if (PacmanWin) {
         [[maybe_unused]] bool ret = winAnimation(window);
-        if (!ret) window.close();
-
-        return;
+        if (!ret) return true;
+        return false;
     }
 
     window.draw(getCurrDirection()[pac_frameindex]);
-    
+    return false;
 }
 
 int Pacman::getScore() {
     return score;
+}
+
+bool Pacman::hasWon() {
+    return PacmanWin;
+}
+
+bool Pacman::isDead() {
+    return PacmanDied;
 }

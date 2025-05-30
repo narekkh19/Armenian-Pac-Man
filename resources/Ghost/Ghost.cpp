@@ -3,7 +3,7 @@
 #include <iostream>
 
 
-Ghost::Ghost(int i, int j, Ghosts type)  :   currPos(j * tile_x, i * tile_y), currDir(Directions::Up), startPos(currPos), targetPos() {
+Ghost::Ghost(int i, int j, GhostType type) : currPos(j * tile_x, i * tile_y), currDir(Directions::Up), startPos(currPos), targetPos() {
    
     if (!GhostImage.loadFromFile("images/whole.png")) {
         throw std::runtime_error("Failed to load ghost texture");

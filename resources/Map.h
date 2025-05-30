@@ -19,8 +19,13 @@ class Map {
     Font pacmanScore;
     friend Pacman;
     friend Ghost;
+    
+    sf::Font endGameFont;
+    sf::Text endGameMessageText;
+    
     public:
         Map();
+        ~Map();
         void loadLevel();
         Pacman& getPacman();
         Block& getBlock();

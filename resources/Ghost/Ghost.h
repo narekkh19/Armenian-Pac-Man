@@ -15,7 +15,7 @@ class Inky;
 class Clyde;
 
 class Ghost {
-    Ghosts type;
+    GhostType type;
     sf::Texture GhostImage;
     std::vector<sf::Sprite> Upframes;
     std::vector<sf::Sprite> Rframes;
@@ -37,7 +37,8 @@ class Ghost {
 
     
     public:
-        Ghost(int i, int j, Ghosts type);
+        Ghost(int i, int j, GhostType type);
+        virtual ~Ghost() = default;
         Ghost() = delete;
         Ghost(const Ghost& other);
         Ghost(Ghost&& other);
