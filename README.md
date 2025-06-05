@@ -1,9 +1,6 @@
 # Armenian Pac-Man 🇦🇲
 
 A classic Pac-Man arcade game with a unique Armenian twist, built from scratch in C++ using the SFML multimedia library. This project features the complete gameplay loop, including four ghosts with their own distinct AI behaviors.
-
-![Gameplay Screenshot](https://raw.githubusercontent.com/narekkh19/Armenian-Pac-Man/main/gameplay.png)
-
 ---
 ## Features
 
