@@ -113,7 +113,6 @@ void Map::draw(sf::RenderWindow& window) {
             }
         }
     }
-
     pacmanScore.draw(window, getPacman().getScore());
 }
 
